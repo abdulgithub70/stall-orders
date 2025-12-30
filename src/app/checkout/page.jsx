@@ -67,7 +67,7 @@ export default function CheckoutPage() {
   };
 
   return (
-    <div className="max-w-xl mx-auto p-5">
+    <div className="max-w-xl mx-auto p-5 mt-8">
       <h2 className="text-2xl font-bold mb-5">Checkout</h2>
 
       <div className="space-y-4">

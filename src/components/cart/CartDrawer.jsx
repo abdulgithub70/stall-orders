@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useCartStore } from "@/store/cartStore";
 import { Button } from "@/components/ui/button";
@@ -9,6 +10,19 @@ export default function CartDrawer({ open, onClose }) {
   const router = useRouter();
   const cart = useCartStore((state) => state.cart);
   const removeItem = useCartStore((state) => state.removeItem);
+
+  // 🔒 Freeze background scroll
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [open]);
 
   if (!open) return null;
 
@@ -60,8 +74,8 @@ export default function CartDrawer({ open, onClose }) {
             <Button
               className="w-full mt-3"
               onClick={() => {
-                onClose();            // drawer close
-                router.push("/checkout"); // navigate
+                onClose();
+                router.push("/checkout");
               }}
             >
               Go to Checkout

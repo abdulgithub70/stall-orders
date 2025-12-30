@@ -27,20 +27,20 @@ export default function ProductCard({ product }) {
   };
 
   return (
-    <Card className="flex flex-col justify-between hover:shadow-xl transition-shadow duration-200">
+    <Card className="flex flex-col  justify-between hover:shadow-xl transition-shadow duration-200">
       <div className="relative">
-        <CardContent className="p-4">
+        <CardContent className="p-1">
           <Image
             src={product.image}
             alt={product.name}
             width={200}
-            height={200}
-            className="mx-auto"
+            height={150}
+            className="mx-auto w-full h-60 object-cover rounded-md"
           />
 
-          <h3 className="mt-4 font-semibold text-gray-800">{product.name}</h3>
-          <p className="text-gray-600 mt-1">₹{product.price}</p>
-
+          <h3 className="mt-1 pl-2 font-semibold text-gray-800">{product.name}</h3>
+          <p className="text-gray-600  pl-2">₹{product.price}</p>
+          <p className="text-gray-600  pl-2">{product.description}</p>
           {/* Badge example */}
           {product.new && (
             <span className="absolute top-2 left-2 bg-blue-600 text-white text-xs px-2 py-1 rounded">
@@ -50,9 +50,9 @@ export default function ProductCard({ product }) {
         </CardContent>
       </div>
 
-      <CardFooter className="p-4 flex justify-between items-center">
+      <CardFooter className="p-1 flex justify-between items-center">
         {quantity > 0 ? (
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-1">
             <Button size="sm" variant="outline" onClick={decrement}>
               -
             </Button>
@@ -62,7 +62,7 @@ export default function ProductCard({ product }) {
             </Button>
           </div>
         ) : (
-          <Button className="w-full" onClick={increment}>
+          <Button className="w-full rounded-full" onClick={increment}>
             Add to Cart
           </Button>
         )}

@@ -1,50 +1,57 @@
 'use client';
+
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import CartDrawer from "@/components/cart/CartDrawer";
-import { Button } from "@/components/ui/button";
+import MobileMenu from "./MobileMenu";
 import { useCartStore } from "@/store/cartStore";
+import { Menu, ShoppingCart } from "lucide-react";
 
 export default function Header() {
-    const [cartOpen, setCartOpen] = useState(false);
-    const cart = useCartStore((state) => state.cart); // for badge
+  const [cartOpen, setCartOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const cart = useCartStore((state) => state.cart);
 
-    return (
-        <>
-            <header className="w-full bg-white shadow-md fixed top-0 left-0 z-50">
-                <div className="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
-                    
-                    {/* Logo / Brand */}
-                    <Link href="/">
-                        <h1 className="text-xl font-bold text-blue-600 cursor-pointer">
-                            StallOrder
-                        </h1>
-                    </Link>
+  // 🔒 lock scroll when menu open
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? "hidden" : "auto";
+  }, [menuOpen]);
 
-                    {/* Right Side */}
-                    <nav className="flex items-center gap-6">
-                        <Link href="/" className="text-gray-700 hover:text-blue-600">
-                            Products
-                        </Link>
+  return (
+    <>
+      <header className="fixed top-0 left-0 w-full bg-[#1e2f4f] text-white z-50 shadow-md">
+        <div className="flex items-center justify-between px-4 h-14">
 
-                        {/* Cart Button with Badge */}
-                        <Button onClick={() => setCartOpen(true)} className="relative">
-                            Cart
-                            {cart.length > 0 && (
-                                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
-                                    {cart.length}
-                                </span>
-                            )}
-                        </Button>
-                    </nav>
-                </div>
-            </header>
+          {/* Hamburger */}
+          <button onClick={() => setMenuOpen(true)}>
+            <Menu size={24} />
+          </button>
 
-            {/* Placeholder to avoid content being hidden behind fixed header */}
-            <div className="h-16"></div>
+          {/* Logo */}
+          <Link href="/" className="text-lg font-semibold">
+            ExpoEase
+          </Link>
 
-            {/* Cart Drawer */}
-            <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} />
-        </>
-    );
+          {/* Cart */}
+          <button
+            onClick={() => setCartOpen(true)}
+            className="relative"
+          >
+            <ShoppingCart size={22} />
+            {cart.length > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+                {cart.length}
+              </span>
+            )}
+          </button>
+        </div>
+      </header>
+
+      <div className="h-14" />
+
+      {/* Drawers */}
+      <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} />
+      <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} />
+    </>
+  );
 }

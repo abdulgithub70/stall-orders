@@ -5,6 +5,7 @@ import { supabase } from "@/lib/supabase";
 import CartItem from "@/components/cart/CartItem";
 import { Button } from "@/components/ui/button";
 
+
 export default function AdminOrdersPage() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -48,7 +49,7 @@ export default function AdminOrdersPage() {
   if (loading) return <p className="p-5">Loading orders...</p>;
 
   return (
-    <div className="max-w-4xl mx-auto p-5">
+    <div className="max-w-4xl mx-auto p-5 mt-8">
       <h2 className="text-2xl font-bold mb-5">Owner Dashboard - Orders</h2>
 
       {orders.length === 0 && <p>No orders yet.</p>}

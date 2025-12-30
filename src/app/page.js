@@ -15,6 +15,7 @@ export default function Home() {
       <ProductList />
 
       {/* Cart Drawer */}
-          </div>
+      
+    </div>
   );
 }
