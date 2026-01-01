@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
+import { Loader2 } from "lucide-react";
 import ServiceBoyCard from "@/components/profiles/serviceBoy";
 
 export default function ServiceBoysPage() {
@@ -28,8 +29,14 @@ export default function ServiceBoysPage() {
   }, []);
 
   if (loading) {
-    return <p className="text-center">Loading service boys...</p>;
-  }
+  return (
+    <div className="flex flex-col items-center justify-center mt-20 gap-3">
+      <Loader2 className="h-8 w-8 animate-spin text-gray-600" />
+      <p className="text-sm text-gray-500">Loading service boys...</p>
+    </div>
+  );
+}
+
 
   return (
     <div className="p-2 rounded-2xl">
