@@ -29,10 +29,10 @@ export default function AccountPage() {
 
             // Fetch profile details
             const { data: profileData } = await supabase
-                .from("profile_details")
+                .from("profiles")
                 .select("*")
                 .eq("id", user.id)
-                .single();
+                .maybeSingle();
 
             if (profileData) setProfile(profileData);
         };
@@ -71,13 +71,13 @@ export default function AccountPage() {
         const imageUrls = await Promise.all(imagesFiles.map(f => f ? handleFileUpload(f) : null));
         const videoUrl = video_file ? await handleFileUpload(video_file) : null;
 
-        const { error } = await supabase.from("profile_details").insert({
+        const { error } = await supabase.from("profiles").insert({
             id: user.id,
             full_name, age, bio, contact_no, price_per_day,
             image1: imageUrls[0], image2: imageUrls[1], image3: imageUrls[2], image4: imageUrls[3], image5: imageUrls[4],
             video_url: videoUrl
         });
-
+        console.log(error);
         if (error) alert(error.message);
         else {
             alert("Profile created!");
@@ -149,7 +149,7 @@ export default function AccountPage() {
                                                                 const data = await res.json();
                                                                 const updatedProfile = { ...profile, [`image${i + 1}`]: data.secure_url };
                                                                 const { error } = await supabase
-                                                                    .from("profile_details")
+                                                                    .from("profiles")
                                                                     .update(updatedProfile)
                                                                     .eq("id", user.id);
                                                                 if (error) alert(error.message);
@@ -177,7 +177,7 @@ export default function AccountPage() {
                                                             const data = await res.json();
                                                             const updatedProfile = { ...profile, [`image${i + 1}`]: data.secure_url };
                                                             const { error } = await supabase
-                                                                .from("profile_details")
+                                                                .from("profiles")
                                                                 .update(updatedProfile)
                                                                 .eq("id", user.id);
                                                             if (error) alert(error.message);

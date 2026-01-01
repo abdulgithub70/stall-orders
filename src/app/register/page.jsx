@@ -14,49 +14,49 @@ export default function RegisterPage() {
     const [loading, setLoading] = useState(false);
 
     const handleRegister = async (e) => {
-  e.preventDefault();
-  setLoading(true);
+        e.preventDefault();
+        setLoading(true);
 
-  const form = e.target;
+        const form = e.target;
 
-  const role = form.role.value;        // radio
-  const username = form.username.value;
-  const email = form.email.value;
-  const mobile = form.mobile.value;
-  const password = form.password.value;
+        const role = form.role.value;        // radio
+        const username = form.username.value;
+        const email = form.email.value;
+        const mobile = form.mobile.value;
+        const password = form.password.value;
+        console.log(role, username, email, mobile, password);
+        // 1️⃣ Supabase Auth Signup
+        const { data, error } = await supabase.auth.signUp({
+            email,
+            password,
+        });
 
-  // 1️⃣ Supabase Auth Signup
-  const { data, error } = await supabase.auth.signUp({
-    email,
-    password,
-  });
+        if (error) {
+            alert(error.message);
+            setLoading(false);
+            return;
+        }
 
-  if (error) {
-    alert(error.message);
-    setLoading(false);
-    return;
-  }
+        // 2️⃣ Insert into profiles table
+        const { error: profileError } = await supabase
+            .from("users_register")
+            .insert({
+                id: data.user.id,
+                role,       // service_boy | hostess
+                username,
+                email,
+                mobile,
+            });
 
-  // 2️⃣ Insert into profiles table
-  const { error: profileError } = await supabase
-    .from("profiles")
-    .insert({
-      id: data.user.id,
-      role,       // service_boy | hostess
-      username,
-      email,
-      mobile,
-    });
+        if (profileError) {
+            alert(profileError.message);
+            setLoading(false);
+            return;
+        }
 
-  if (profileError) {
-    alert(profileError.message);
-    setLoading(false);
-    return;
-  }
-
-  setLoading(false);
-  router.push("/account");
-};
+        setLoading(false);
+        router.push("/account");
+    };
 
 
     return (
