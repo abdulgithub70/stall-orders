@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+
 
 export default function ServiceBoyCard({ profile }) {
   const router = useRouter();
@@ -20,7 +22,7 @@ export default function ServiceBoyCard({ profile }) {
   return (
     <div className="bg-white rounded-xl shadow p-4">
       {/* CAROUSEL */}
-      <div className="relative w-full h-70">
+      <div className="relative w-full h-80">
         <Image
           src={images[current] || "/placeholder.png"}
           alt={profile.full_name}
@@ -30,25 +32,26 @@ export default function ServiceBoyCard({ profile }) {
       </div>
 
       {images.length > 1 && (
-        <div className="flex justify-center gap-6 mt-3 bg-gray-500/30 py-1 ml-4 mr-4 rounded-full ">
+        <div className="flex justify-center gap-x-30 p-0 bg-gray-300/40 py-1 mt-1 ml-8 mr-8 rounded-full">
           <button
             onClick={() =>
               setCurrent(current === 0 ? images.length - 1 : current - 1)
             }
-            className=" left-3 bg-gray-200 rounded-full"
+            className=" rounded-full m-0 hover:bg-gray-300 transition"
           >
-            ◀
+            <ChevronLeft className="m-0" size={21} />
           </button>
-
+            
           <button
             onClick={() =>
               setCurrent(current === images.length - 1 ? 0 : current + 1)
             }
-            className="ml-35 bg-gray-200 rounded-full"
+            className=" rounded-full m-0 hover:bg-gray-300 transition"
           >
-            ▶
+            <ChevronRight className="m-0" size={21} />
           </button>
         </div>
+
       )}
 
       {/* DETAILS */}
