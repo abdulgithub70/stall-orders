@@ -20,14 +20,14 @@ export default function ServiceBoyCard({ profile }) {
   const [current, setCurrent] = useState(0);
 
   return (
-    <div className="bg-white rounded-xl shadow p-4">
+    <div className="bg-white rounded-[8px] shadow pt-1">
       {/* CAROUSEL */}
       <div className="relative w-full h-80">
         <Image
           src={images[current] || "/placeholder.png"}
           alt={profile.full_name}
           fill
-          className="object-cover rounded-lg"
+          className="object-cover rounded-lg p-[1px]"
         />
       </div>
 

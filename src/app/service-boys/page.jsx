@@ -32,10 +32,9 @@ export default function ServiceBoysPage() {
   }
 
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold mb-6">Service Boys</h1>
+    <div className="p-2 rounded-2xl">
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-9 rounded-[6px]">
         {profiles.map((profile) => (
           <ServiceBoyCard key={profile.id} profile={profile} />
         ))}

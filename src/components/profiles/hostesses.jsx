@@ -18,24 +18,24 @@ export default function HostessCard({ profile }) {
   const [current, setCurrent] = useState(0);
 
   return (
-    <div className="bg-white rounded-xl shadow p-4">
+    <div className="bg-white rounded-[8px] shadow pt-1">
       {/* CAROUSEL */}
-      <div className="relative w-full h-80">
+      <div className="relative w-full h-80 ">
         <Image
           src={images[current] || "/placeholder.png"}
           alt={profile.full_name}
           fill
-          className="object-cover rounded-lg"
+          className="object-cover rounded-lg p-[1px]"
         />
         
       </div>
       {images.length > 1 && (
-        <div className="flex justify-center gap-x-30 p-0 bg-gray-300/40 py-1 mt-1 ml-8 mr-8 rounded-full">
+        <div className="flex justify-center gap-x-30 p-0 bg-gray-300/40 py-1 mt-[2px] ml-8 mr-8 rounded-full">
           <button
             onClick={() =>
               setCurrent(current === 0 ? images.length - 1 : current - 1)
             }
-            className=" rounded-full m-0 hover:bg-gray-300 transition"
+            className=" rounded-full m-0 hover:bg-gray-500 transition"
           >
             <ChevronLeft className="m-0" size={21} />
           </button>
@@ -44,7 +44,7 @@ export default function HostessCard({ profile }) {
             onClick={() =>
               setCurrent(current === images.length - 1 ? 0 : current + 1)
             }
-            className=" rounded-full m-0 hover:bg-gray-300 transition"
+            className=" rounded-full m-0 hover:bg-gray-500 transition"
           >
             <ChevronRight className="m-0" size={21} />
           </button>
