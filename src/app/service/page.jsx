@@ -1,9 +1,8 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 export default function ServiceCheckout() {
@@ -21,24 +20,32 @@ export default function ServiceCheckout() {
   const [hallNo, setHallNo] = useState("");
   const [stallNo, setStallNo] = useState("");
 
-  // FETCH PROFILE
+  // FETCH PROFILE (CSR)
   useEffect(() => {
     if (!profileId) return;
 
-    fetch(
-      `https://wcwklmxunkflyrbrxofk.supabase.co/rest/v1/profiles?id=eq.${profileId}&select=*`,
-      {
-        headers: {
-          apikey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}`,
-        },
-      }
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        setProfile(data[0]);
+    const fetchProfile = async () => {
+      try {
+        const res = await fetch(
+          `https://wcwklmxunkflyrbrxofk.supabase.co/rest/v1/profiles?id=eq.${profileId}&select=*`,
+          {
+            headers: {
+              apikey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+              Authorization: `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}`,
+            },
+          }
+        );
+        const data = await res.json();
+        setProfile(data[0] || null);
+      } catch (err) {
+        console.error("Error fetching profile:", err);
+        setProfile(null);
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    fetchProfile();
   }, [profileId]);
 
   // BOOKING HANDLER
@@ -52,52 +59,59 @@ export default function ServiceCheckout() {
 
     setSubmitting(true);
 
-    const res = await fetch(
-      "https://wcwklmxunkflyrbrxofk.supabase.co/rest/v1/service_bookings",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          apikey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}`,
-        },
-        body: JSON.stringify({
-          client_name: clientName,
-          client_mobile: mobile,
-          hall_no: hallNo,
-          stall_no: stallNo,
-          profile_id: profile.id, // 🔑 ONLY IDENTITY
-        }),
+    try {
+      const res = await fetch(
+        "https://wcwklmxunkflyrbrxofk.supabase.co/rest/v1/service_bookings",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            apikey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}`,
+          },
+          body: JSON.stringify({
+            client_name: clientName,
+            client_mobile: mobile,
+            hall_no: hallNo,
+            stall_no: stallNo,
+            profile_id: profile.id, // only identity stored
+          }),
+        }
+      );
+
+      if (res.ok) {
+        alert(
+          "✅ Booking Confirmed! Our team will contact you soon. For queries, visit the contact page."
+        );
+        setClientName("");
+        setMobile("");
+        setHallNo("");
+        setStallNo("");
+        router.push("/"); // redirect after booking
+      } else {
+        alert("❌ Booking Failed");
       }
-    );
-
-    setSubmitting(false);
-
-    if (res.ok) {
-      alert("✅ Booking Confirmed Our team will contact you soon! if you have any questions contact us at our contact page.");
-      setClientName("");
-      setMobile("");
-      setHallNo("");
-      setStallNo("");
-    } else {
+    } catch (err) {
+      console.error(err);
       alert("❌ Booking Failed");
+    } finally {
+      setSubmitting(false);
     }
-    router.push("/");
   };
 
   if (loading) {
     return (
-        <div className="flex flex-col items-center justify-center mt-35 gap-3">
-      <Loader2 className="h-8 w-8 animate-spin text-gray-600" />
-      <p className="text-sm text-gray-500">Loading...</p>
-    </div>
-    )
+      <div className="flex flex-col items-center justify-center mt-36 gap-3">
+        <Loader2 className="h-8 w-8 animate-spin text-gray-600" />
+        <p className="text-sm text-gray-500">Loading profile...</p>
+      </div>
+    );
   }
 
   if (!profile) {
     return <p className="text-center mt-20">Profile not found</p>;
   }
-  
+
   return (
     <div className="max-w-3xl mx-auto p-4">
       {/* PROFILE CARD */}
@@ -110,13 +124,9 @@ export default function ServiceCheckout() {
           className="rounded-lg object-cover w-full h-72"
         />
 
-        <h2 className="text-xl font-semibold mt-4">
-          {profile.full_name}
-        </h2>
+        <h2 className="text-xl font-semibold mt-4">{profile.full_name}</h2>
         <p className="text-gray-600">{profile.bio}</p>
-        <p className="text-sm mt-1 font-medium">
-          Role: {profile.role}
-        </p>
+        <p className="text-sm mt-1 font-medium">Role: {profile.role}</p>
       </div>
 
       {/* CLIENT FORM */}
@@ -124,9 +134,7 @@ export default function ServiceCheckout() {
         onSubmit={handleBooking}
         className="bg-white shadow rounded-lg p-4 mt-6 space-y-4"
       >
-        <h3 className="text-lg font-semibold">
-          Client Details
-        </h3>
+        <h3 className="text-lg font-semibold">Client Details</h3>
 
         <input
           type="text"
