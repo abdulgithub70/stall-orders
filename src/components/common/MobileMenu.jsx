@@ -30,10 +30,10 @@ export default function MobileMenu({ open, onClose }) {
         {/* Menu Items */}
         <nav className="flex flex-col p-4 gap-4 text-gray-700">
           <Link href="/account" onClick={onClose}>👤 My Account</Link>
-          <Link href="/orders" onClick={onClose}>📦 My Orders</Link>
-          <Link href="/saved" onClick={onClose}>❤️ Saved Profiles</Link>
+          {/*<Link href="/orders" onClick={onClose}>📦 My Orders</Link>*/}
+          {/*<Link href="/saved" onClick={onClose}>❤️ Saved Profiles</Link>*/}
           <Link href="/about" onClick={onClose}>ℹ️ About ExpoEase</Link>
-          <Link href="/contact" onClick={onClose}>📞 Contact Support</Link>
+          <Link href="/contactus" onClick={onClose}>📞 Contact Support</Link>
 
           <hr />
 

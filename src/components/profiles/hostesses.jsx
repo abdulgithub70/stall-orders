@@ -66,14 +66,10 @@ export default function HostessCard({ profile }) {
 
       <p className="text-sm text-gray-600">{profile.bio}</p>
 
-      {/*<p className="text-sm mt-2 font-medium">
-        ₹ {profile.price_per_day} / day
-      </p>*/}
-
-      {/* BOOK BUTTON */}
+      
       <button
         onClick={() =>
-          router.push(`/checkout?profileId=${profile.id}`)
+          router.push(`/service?profileId=${profile.id}`)
         }
         className="w-full mt-4 bg-black text-white py-2 rounded-lg hover:bg-gray-800"
       >

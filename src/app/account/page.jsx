@@ -9,36 +9,52 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { User, Plus, LogOut } from "lucide-react";
+import { Loader2 } from "lucide-react";
 
 
 export default function AccountPage() {
     const router = useRouter();
     const [user, setUser] = useState(null);
     const [profile, setProfile] = useState(null);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true); // ✅ start with true
 
-    
   const CLOUD_NAME = process.env.NEXT_PUBLIC_CLOUDINARY_NAME;
   const UPLOAD_PRESET = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
 
-    useEffect(() => {
-        const fetchUser = async () => {
-            const { data: { user } } = await supabase.auth.getUser();
-            if (!user) return router.push("/login");
-            setUser(user);
+  useEffect(() => {
+    const fetchUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
 
-            // Fetch profile details
-            const { data: profileData } = await supabase
-                .from("profiles")
-                .select("*")
-                .eq("id", user.id)
-                .maybeSingle();
+      if (!user) {
+        router.push("/login"); // redirect if not logged in
+      } else {
+        setUser(user);
 
-            if (profileData) setProfile(profileData);
-        };
+        // Fetch profile details
+        const { data: profileData } = await supabase
+          .from("profiles")
+          .select("*")
+          .eq("id", user.id)
+          .maybeSingle();
 
-        fetchUser();
-    }, []);
+        if (profileData) setProfile(profileData);
+      }
+
+      setLoading(false); // ✅ done checking
+    };
+
+    fetchUser();
+  }, []);
+
+  // ✅ Show loading while checking user
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center mt-35 gap-3">
+      <Loader2 className="h-8 w-8 animate-spin text-gray-600" />
+      <p className="text-sm text-gray-500">Loading...</p>
+    </div>
+    );
+  }
 
     const handleFileUpload = async (file) => {
         const formData = new FormData();

@@ -74,7 +74,7 @@ export default function ServiceBoyCard({ profile }) {
       {/* BOOK BUTTON */}
       <button
         onClick={() =>
-          router.push(`/checkout?profileId=${profile.id}`)
+          router.push(`/service?profileId=${profile.id}`)
         }
         className="w-full mt-4 bg-black text-white py-2 rounded-lg hover:bg-gray-800"
       >
