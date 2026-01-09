@@ -8,7 +8,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { User, Plus, LogOut } from "lucide-react";
+import { User, Plus, LogOut, Trash2 } from "lucide-react";
+import { Trash } from 'lucide-react';
+import { Upload } from 'lucide-react';
 
 
 export default function AccountPage() {
@@ -90,7 +92,7 @@ export default function AccountPage() {
 
     return (
         <>
-            <div className="max-w-3xl mx-auto px-4 py-6 space-y-6">
+            <div className="max-w-3xl mt-8 mx-auto px-4 py-6 space-y-6">
                 {user && (
                     <div className="space-y-4">
 
@@ -117,22 +119,22 @@ export default function AccountPage() {
                                                     <img src={profile[`image${i + 1}`]} alt={`Uploaded ${i + 1}`} className="w-full h-full object-cover mt-2" />
                                                     {/* Delete Button */}
                                                     <button
-                                                        className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-2"
+                                                        className="absolute top-1 right-1 bg-gray-100/40 text-white rounded-full p-2"
                                                         onClick={async () => {
                                                             const updatedProfile = { ...profile, [`image${i + 1}`]: null };
                                                             const { error } = await supabase
-                                                                .from("profile_details")
+                                                                .from("profiles")
                                                                 .update(updatedProfile)
                                                                 .eq("id", user.id);
                                                             if (error) alert(error.message);
                                                             else setProfile(updatedProfile);
                                                         }}
                                                     >
-                                                        X
+                                                      <Trash2 className="text-gray-800" />
                                                     </button>
                                                     {/* Replace Button */}
-                                                    <label className="absolute bottom-1 right-1 bg-black text-white rounded-full p-1 cursor-pointer">
-                                                        ⟳
+                                                    <label className="absolute bottom-1 right-1 bg-gray-100/40 text-white rounded-full p-1 cursor-pointer">
+                                                       <Upload className="text-black" />
                                                         <input
                                                             type="file"
                                                             className="hidden"
@@ -243,7 +245,7 @@ export default function AccountPage() {
                                 </div>
                                 <div className="space-y-1">
                                     <Label>Contact Number</Label>
-                                    <Input name="contact_no" required />
+                                    <Input name="contact_no" type="number" required />
                                 </div>
                                 <div className="space-y-1">
                                     <Label>Price per Day</Label>
