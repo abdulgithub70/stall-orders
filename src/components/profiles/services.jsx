@@ -113,15 +113,15 @@ export default function ServiceCheckout() {
   }
 
   return (
-    <div className="max-w-3xl mx-auto p-4">
+    <div className="max-w-3xl mx-auto  mt-10">
       {/* PROFILE CARD */}
-      <div className="bg-white shadow rounded-lg p-4">
+      <div className="bg-white shadow rounded-lg p-2">
         <Image
           src={profile.image1 || "/placeholder.png"}
           alt={profile.full_name}
           width={400}
-          height={300}
-          className="rounded-lg object-cover w-full h-72"
+          height={350}
+          className="rounded-lg object-cover w-full h-min"
         />
 
         <h2 className="text-xl font-semibold mt-4">{profile.full_name}</h2>
