@@ -63,7 +63,7 @@ export default function LoginPage() {
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 px-4">
             <Card className="w-full max-w-sm  ">
                 <CardHeader>
-                    <CardTitle className="text-center text-xl mt-7">Welcome Back</CardTitle>
+                    <CardTitle className="text-center text-xl mt-4">Welcome Back</CardTitle>
                 </CardHeader>
 
                 <CardContent>
