@@ -20,11 +20,11 @@ export default function RegisterPage() {
         const form = e.target;
 
         const role = form.role.value;        // radio
-        const username = form.username.value;
+        //const username = form.username.value;
         const email = form.email.value;
-        const mobile = form.mobile.value;
+        //const mobile = form.mobile.value;
         const password = form.password.value;
-        console.log(role, username, email, mobile, password);
+        console.log(role, email, password);
         // 1️⃣ Supabase Auth Signup
         const { data, error } = await supabase.auth.signUp({
             email,
@@ -43,9 +43,9 @@ export default function RegisterPage() {
             .insert({
                 id: data.user.id,
                 role,       // service_boy | hostess
-                username,
+                //username,
                 email,
-                mobile,
+                //mobile,
             });
 
         if (profileError) {
@@ -60,10 +60,10 @@ export default function RegisterPage() {
 
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-            <Card className="w-full max-w-sm">
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 px-4">
+            <Card className="w-full max-w-sm ">
                 <CardHeader>
-                    <CardTitle className="text-center text-xl">Create Account</CardTitle>
+                    <CardTitle className="text-center text-xl mt-5">Create Account</CardTitle>
                 </CardHeader>
 
                 <CardContent>
@@ -98,21 +98,21 @@ export default function RegisterPage() {
                         </div>
 
 
-                        <div className="space-y-1">
+                        {/*<div className="space-y-1">
                             <Label htmlFor="username">Username</Label>
                             <Input id="username" name="username" placeholder="mr.abdul_7" required />
                         </div>
-
+*/}
                         <div className="space-y-1">
                             <Label htmlFor="email">Email</Label>
                             <Input id="email" name="email" type="email" placeholder="you@example.com" required />
                         </div>
-
+{/*
                         <div className="space-y-1">
                             <Label htmlFor="mobile">Mobile Number</Label>
                             <Input id="mobile" name="mobile" type="number" placeholder="9876543210" required />
                         </div>
-
+*/}
                         <div className="space-y-1">
                             <Label htmlFor="password">Password</Label>
                             <Input id="password" name="password" type="password" required />
@@ -122,7 +122,7 @@ export default function RegisterPage() {
                             {loading ? "Creating..." : "Register"}
                         </Button>
 
-                        <p className="text-sm text-center text-gray-600">
+                        <p className="text-sm text-center text-gray-600 mb-5">
                             Already registered?{" "}
                             <span
                                 onClick={() => router.push("/login")}

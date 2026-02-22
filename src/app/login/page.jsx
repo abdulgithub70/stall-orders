@@ -36,7 +36,7 @@ export default function LoginPage() {
 
         // 2️⃣ Check role (extra safety)
         const { data: profile, error: profileError } = await supabase
-            .from("profiles")
+            .from("users_register")
             .select("role")
             .eq("id", data.user.id)
             .single();
@@ -60,22 +60,23 @@ export default function LoginPage() {
 
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-            <Card className="w-full max-w-sm">
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 px-4">
+            <Card className="w-full max-w-sm  ">
                 <CardHeader>
-                    <CardTitle className="text-center text-xl">Welcome Back</CardTitle>
+                    <CardTitle className="text-center text-xl mt-7">Welcome Back</CardTitle>
                 </CardHeader>
 
                 <CardContent>
                     <form onSubmit={handleLogin} className="space-y-4">
 
-                        <div className="space-y-1">
+                        <div className="space-y-1 ">
                             <Label htmlFor="email">Email</Label>
                             <Input
                                 id="email"
                                 name="email"
                                 type="email"
                                 placeholder="you@example.com"
+                                className=""
                                 required
                             />
                         </div>
@@ -93,7 +94,7 @@ export default function LoginPage() {
                         <Button className="w-full" disabled={loading}>
                             {loading ? "Logging in..." : "Login"}
                         </Button>
-                        <p className="text-sm text-center text-gray-600">
+                        <p className="text-sm text-center text-gray-600 mb-5">
                             Not registered?{" "}
                             <span
                                 onClick={() => router.push("/register")}
